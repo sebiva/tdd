@@ -27,21 +27,23 @@ class NewVisitorTest(unittest.TestCase):
         # When enter is pressed, the page should be updated and there should be an item
         # "1: Buy food" in a todo list table
         inputbox.send_keys(Keys.ENTER)
+        self.check_for_row_in_list_table('1: Buy food')
 
+        # Another item is added to the list
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Haskell!')
         inputbox.send_keys(Keys.ENTER)
 
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        print('aaa')
-        for row in rows:
-            print(row.text)
-        print('bbb')
-        self.assertIn('1: Buy food', [row.text for row in rows])
-        self.assertIn('2: Haskell!', [row.text for row in rows])
+        # Now both items should be shown
+        self.check_for_row_in_list_table('1: Buy food')
+        self.check_for_row_in_list_table('2: Haskell!')
+
         self.fail('Finish test!')
 
+    def check_for_row_in_list_table(self, row_text):
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn(row_text, [row.text for row in rows])
 
 if __name__ == '__main__':
     unittest.main(warnings='ignore')
