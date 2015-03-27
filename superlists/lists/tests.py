@@ -26,12 +26,20 @@ class HomePageTest(TestCase):
     request.POST['item_text'] = 'A new list item'
 
     response = home_page(request)
-    self.assertIn('A new list item', response.content.decode())
-    expected_html = render_to_string(
-        'home.html',
-        {'new_item_text': 'A new list item'}
-        )
-    self.assertEqual(response.content.decode(), expected_html)
+
+    self.assertEqual(Item.objects.count(), 1) # The item should now be added to the db.
+    new_item = Item.objects.first()
+    self.assertEqual(new_item.text, 'A new list item')
+
+  def test_home_page_redirects_after_POST(self):
+    request = HttpRequest()
+    request.method = 'POST'
+    request.POST['item_text'] = 'A new list item'
+
+    response = home_page(request)
+
+    self.assertEqual(response.status_code, 302)
+    self.assertEqual(response['location'], '/')
 
 class ItemModelTest(TestCase):
 
@@ -51,3 +59,8 @@ class ItemModelTest(TestCase):
     second_saved_item = saved_items[1]
     self.assertEqual(first_saved_item.text, 'The first (ever) list item')
     self.assertEqual(second_saved_item.text, 'Item the second')
+
+  def test_home_page_only_saves_item_when_necessary(self):
+    request = HttpRequest()
+    home_page(request)
+    self.assertEqual(Item.objects.count(), 0)
