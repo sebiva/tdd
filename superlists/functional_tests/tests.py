@@ -25,20 +25,20 @@ class NewVisitorTest(LiveServerTestCase):
    inputbox = self.browser.find_element_by_id('id_new_item')
    self.assertEqual(inputbox.get_attribute('placeholder'), 'Enter a to-do item')
    # Adding something to the todo list
-   inputbox.send_keys('Buy food')
+   inputbox.send_keys('Buy feathers')
    # When enter is pressed, the page should be updated and there should be an item
    # "1: Buy food" in a todo list table
    inputbox.send_keys(Keys.ENTER)
-   self.check_for_row_in_list_table('1: Buy food')
+   self.check_for_row_in_list_table('1: Buy feathers')
 
    # Another item is added to the list
    inputbox = self.browser.find_element_by_id('id_new_item')
-   inputbox.send_keys('Haskell!')
+   inputbox.send_keys('Use feathers and build')
    inputbox.send_keys(Keys.ENTER)
 
    # Now both items should be shown
-   self.check_for_row_in_list_table('1: Buy food')
-   self.check_for_row_in_list_table('2: Haskell!')
+   self.check_for_row_in_list_table('1: Buy feathers')
+   self.check_for_row_in_list_table('2: Use feathers and build')
 
    self.fail('Finish test!')
 
