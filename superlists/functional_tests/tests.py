@@ -57,14 +57,13 @@ class NewVisitorTest(LiveServerTestCase):
     self.assertNotIn('and build', page_text)
 
     # The new user creates a new list by entering an item
-    inputbox = self.browser.find_element_by_tag_id('id_new_item')
-    inputbox.sendkeys('Buy milk')
-    inputbox.sendkeys(Keys.Enter)
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox.send_keys('Buy milk')
+    inputbox.send_keys(Keys.ENTER)
 
     # Francis gets his own url
     francis_list_url = self.browser.current_url
 
-    self.fail('Finish test!')
     self.assertRegex(francis_list_url, '/lists/.+')
     self.assertNotEqual(francis_list_url, edith_list_url)
 
