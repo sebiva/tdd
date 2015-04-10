@@ -27,8 +27,10 @@ class NewVisitorTest(LiveServerTestCase):
    # Adding something to the todo list
    inputbox.send_keys('Buy feathers')
    # When enter is pressed, the page should be updated and there should be an item
-   # "1: Buy food" in a todo list table
+   # "1: Buy feathers" in a todo list table
    inputbox.send_keys(Keys.ENTER)
+   edith_list_url = self.browser.current_url
+   self.assertRegex(edith_list_url, '/lists/.+')
    self.check_for_row_in_list_table('1: Buy feathers')
 
    # Another item is added to the list
